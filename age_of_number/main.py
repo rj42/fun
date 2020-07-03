@@ -89,9 +89,9 @@ def main():
     def add_candidate(num, age):
         num = int(''.join(num))
         if len(OLDEST_NUMBERS) < TOP_SIZE:
-            heapq.heappush(OLDEST_NUMBERS, (age, num))
+            heapq.heappush(OLDEST_NUMBERS, (age, -num))
         else:
-            heapq.heappushpop(OLDEST_NUMBERS, (age, num))
+            heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
     for i in range(1, MAX_DIGIT_COUNT + 1):
         if i % 10 == 0:
@@ -104,8 +104,8 @@ def main():
     # World record.
     #add_candidate(RECORD, get_age_of_number(RECORD))
 
-    for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], x[1]))):
-        print(f'{i}:age={age} num={num}')
+    for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
+        print(f'{i}:age={age} num={-num}')
 
 if __name__ == '__main__':
     main()
