@@ -2,6 +2,7 @@
 import numpy as np
 import heapq
 import sys
+import time
 from itertools import combinations_with_replacement
 
 BASE_NUMBERS = [
@@ -93,9 +94,11 @@ def main():
         else:
             heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
+    start_time = time.time()
     for i in range(1, MAX_DIGIT_COUNT + 1):
         if i % 10 == 0:
-            print(f'Processed: {i} digits', file=sys.stderr)
+            elapsed = time.time() - start_time
+            print(f'Processed: {i} digits. Elapsed: {elapsed:.2f}s', file=sys.stderr)
         for num in generate_possible_numbers(i):
             num = collapse_number(num)
             age = get_age_of_number(num)
