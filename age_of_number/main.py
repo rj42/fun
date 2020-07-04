@@ -98,7 +98,7 @@ def main():
             heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
     def report(i, elapsed):
-        print('=' * 20, f'Step={i} Elapsed: {elapsed:.2f}', '=' * 20)
+        print('=' * 20, f'Step={i} Elapsed: {elapsed:.2f}s', '=' * 20)
         for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
             print(f'{i+1}:age={age} num={-num}')
         print('=' * 60)
