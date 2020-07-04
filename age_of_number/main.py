@@ -87,8 +87,8 @@ def collapse_number(num):
 def main():
     OLDEST_NUMBERS = []
     TOP_SIZE = 50
-    MAX_DIGIT_COUNT = 750
-    REPORT_TIMEOUT = 600 # 10 minutes
+    MAX_DIGIT_COUNT = 1500
+    REPORT_TIMEOUT = 300 # 5 minutes
 
     def add_candidate(num, age):
         num = int(''.join(num))
@@ -97,8 +97,8 @@ def main():
         else:
             heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
-    def report(i):
-        print('=' * 20, f'Step={i}', '=' * 20)
+    def report(i, elapsed):
+        print('=' * 20, f'Step={i} Elapsed: {elapsed:.2f}', '=' * 20)
         for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
             print(f'{i+1}:age={age} num={-num}')
         print('=' * 60)
@@ -108,12 +108,12 @@ def main():
     reported_time = start_time
     for i in range(1, MAX_DIGIT_COUNT + 1):
         now = time.time()
+        elapsed = now - start_time
         if i % 10 == 0:
-            elapsed = now - start_time
-            print(f'Processed: {i} digits. Elapsed: {elapsed:.2f}s', file=sys.stderr)
+            print(f'Processed: {i} digits. Elapseds: {elapsed:.2f}s', file=sys.stderr)
 
         if i % 100 == 0 or now - reported_time >= REPORT_TIMEOUT:
-            report(i)
+            report(i, elapsed)
             reported_time = now
 
         for num in generate_possible_numbers(i):
