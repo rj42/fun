@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-import numpy as np
 import heapq
 import sys
 import time
+from functools import reduce # don't use numpy due integer overflow
 from itertools import combinations_with_replacement
 
 BASE_NUMBERS = [
@@ -11,9 +11,11 @@ BASE_NUMBERS = [
 ]
 
 RECORD = str(277_777_788_888_899)
-NEW_RECORD = str(277777777777777777777777778888888888888888999999999999999999999999)
 
 # -- Helpers - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - -
+
+def _self_product(number):
+    return reduce((lambda x, y: x * y), map(int, number))
 
 def _get_age_of_number(number, age):
     #print(age, number)
@@ -21,12 +23,12 @@ def _get_age_of_number(number, age):
         return age
 
     number = str(number) # I'm tooo lazy
-    next_gen = np.product(list(map(int, number)))
+    next_gen = _self_product(number)
     return _get_age_of_number(next_gen, age + 1)
 
 def get_age_of_number(number):
     #print(0, number)
-    next_gen = np.product(list(map(int, number)))
+    next_gen = _self_product(number)
     return _get_age_of_number(next_gen, 1)
 
 def generate_possible_numbers(len):
@@ -85,7 +87,7 @@ def collapse_number(num):
 def main():
     OLDEST_NUMBERS = []
     TOP_SIZE = 50
-    MAX_DIGIT_COUNT = 150
+    MAX_DIGIT_COUNT = 350
 
     def add_candidate(num, age):
         num = int(''.join(num))
