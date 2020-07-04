@@ -110,7 +110,7 @@ def main():
         now = time.time()
         elapsed = now - start_time
         if i % 10 == 0:
-            print(f'Processed: {i} digits. Elapseds: {elapsed:.2f}s', file=sys.stderr)
+            print(f'Processed: {i} digits. Elapsed: {elapsed:.2f}s', file=sys.stderr)
 
         if i % 100 == 0 or now - reported_time >= REPORT_TIMEOUT:
             report(i, elapsed)
