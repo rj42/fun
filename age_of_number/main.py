@@ -88,6 +88,7 @@ def main():
     OLDEST_NUMBERS = []
     TOP_SIZE = 50
     MAX_DIGIT_COUNT = 750
+    REPORT_TIMEOUT = 600 # 10 minutes
 
     def add_candidate(num, age):
         num = int(''.join(num))
@@ -96,7 +97,7 @@ def main():
         else:
             heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
-    def show_result(i):
+    def report(i):
         print('=' * 20, f'Step={i}', '=' * 20)
         for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
             print(f'{i+1}:age={age} num={-num}')
@@ -104,20 +105,23 @@ def main():
 
 
     start_time = time.time()
+    reported_time = start_time
     for i in range(1, MAX_DIGIT_COUNT + 1):
+        now = time.time()
         if i % 10 == 0:
-            elapsed = time.time() - start_time
+            elapsed = now - start_time
             print(f'Processed: {i} digits. Elapsed: {elapsed:.2f}s', file=sys.stderr)
 
-        if i % 100 == 0:
-            show_result(i)
+        if i % 100 == 0 or now - reported_time >= REPORT_TIMEOUT:
+            report(i)
+            reported_time = now()
 
         for num in generate_possible_numbers(i):
             num = collapse_number(num)
             age = get_age_of_number(num)
             add_candidate(num, age)
 
-    show_result(i)
+    report(i)
 
 if __name__ == '__main__':
     main()
