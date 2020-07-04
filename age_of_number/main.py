@@ -2,7 +2,7 @@
 import heapq
 import sys
 import time
-from functools import reduce # don't use numpy due integer overflow
+from functools import reduce # don't use numpy due to integer overflow
 from itertools import combinations_with_replacement
 
 BASE_NUMBERS = [
@@ -87,7 +87,7 @@ def collapse_number(num):
 def main():
     OLDEST_NUMBERS = []
     TOP_SIZE = 50
-    MAX_DIGIT_COUNT = 350
+    MAX_DIGIT_COUNT = 750
 
     def add_candidate(num, age):
         num = int(''.join(num))
@@ -96,21 +96,28 @@ def main():
         else:
             heapq.heappushpop(OLDEST_NUMBERS, (age, -num))
 
+    def show_result(i):
+        print('=' * 20, f'Step={i}', '=' * 20)
+        for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
+            print(f'{i+1}:age={age} num={-num}')
+        print('=' * 60)
+
+
     start_time = time.time()
     for i in range(1, MAX_DIGIT_COUNT + 1):
         if i % 10 == 0:
             elapsed = time.time() - start_time
             print(f'Processed: {i} digits. Elapsed: {elapsed:.2f}s', file=sys.stderr)
+
+        if i % 100 == 0:
+            show_result(i)
+
         for num in generate_possible_numbers(i):
             num = collapse_number(num)
             age = get_age_of_number(num)
             add_candidate(num, age)
 
-    # World record.
-    #add_candidate(RECORD, get_age_of_number(RECORD))
-
-    for i, (age, num) in enumerate(sorted(OLDEST_NUMBERS, key=lambda x:(-x[0], -x[1]))):
-        print(f'{i}:age={age} num={-num}')
+    show_result(i)
 
 if __name__ == '__main__':
     main()
