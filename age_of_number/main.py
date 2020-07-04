@@ -15,7 +15,7 @@ RECORD = str(277_777_788_888_899)
 # -- Helpers - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - -
 
 def _self_product(number):
-    return reduce((lambda x, y: x * y), map(int, number))
+    return reduce(lambda x, y: x * y, map(int, number))
 
 def _get_age_of_number(number, age):
     #print(age, number)
@@ -121,7 +121,7 @@ def main():
             age = get_age_of_number(num)
             add_candidate(num, age)
 
-    report(i)
+    report(i, elapsed)
 
 if __name__ == '__main__':
     main()
