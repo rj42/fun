@@ -114,7 +114,7 @@ def main():
 
         if i % 100 == 0 or now - reported_time >= REPORT_TIMEOUT:
             report(i)
-            reported_time = now()
+            reported_time = now
 
         for num in generate_possible_numbers(i):
             num = collapse_number(num)
